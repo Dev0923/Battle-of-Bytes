@@ -90,6 +90,15 @@ a, button, .btn, input[type="submit"], input[type="button"], label{ cursor: var(
 .nav a:hover{color:var(--text);background:#1a2140}
 .nav .cta{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#0b0f1d;font-weight:700;box-shadow:0 0 12px rgba(0,240,255,.5),0 0 24px rgba(255,43,208,.35)}
 
+/* Mobile nav */
+.nav-toggle{ display:none; background:transparent; border:1px solid #334; color:#cde7ff; border-radius:8px; padding:8px 10px; font-size:18px }
+@media (max-width: 820px){
+  .nav-toggle{ display:block }
+  .header-inner{ gap:10px }
+  .nav{ position:absolute; top:64px; right:12px; left:12px; display:none; flex-direction:column; gap:8px; padding:10px; background:rgba(14,17,38,.95); border:1px solid #2a2f55; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,.4) }
+  .nav.open{ display:flex }
+}
+
 .hero{padding:56px 0;background:
   radial-gradient(1200px 500px at 80% -50%,rgba(0,240,255,.25),transparent 40%),
   radial-gradient(1200px 500px at 20% -50%,rgba(255,43,208,.18),transparent 40%)}
@@ -160,6 +169,20 @@ input:focus,textarea:focus,select:focus{border-color:var(--brand);box-shadow:0 0
   .gallery{grid-template-columns:1fr 1fr}
   .cards{grid-template-columns:1fr}
 }
+
+/* Responsive arena grid */
+.arena-scene{position:relative;height:clamp(380px,60vh,520px);perspective:1200px;margin-top:16px}
+.arena-grid{grid-template-columns:repeat(5,1fr)}
+@media (max-width: 1200px){ .arena-grid{ grid-template-columns:repeat(4,1fr) } }
+@media (max-width: 900px){ .arena-grid{ grid-template-columns:repeat(3,1fr) } }
+@media (max-width: 640px){ .arena-grid{ grid-template-columns:repeat(2,1fr); gap:10px; padding:12px } }
+@media (max-width: 380px){ .arena-grid{ grid-template-columns:1fr } }
+
+/* Poll figure: hide on small screens to avoid overlap */
+@media (max-width: 900px){ .poll-figure{ display:none } }
+
+/* Poll grid: allow smaller tiles on small screens */
+@media (max-width: 420px){ .poll-grid{ grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)) } }
 
 /* Auction & poll */
 .countdown{font-weight:700;color:var(--accent);margin:12px 0}

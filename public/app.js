@@ -1073,6 +1073,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
   try{ document.body.classList.add('boot-complete'); }catch{}
 });
 
+// ------- Mobile Nav Toggle -------
+document.addEventListener('DOMContentLoaded', ()=>{
+  const btn = document.getElementById('navToggle');
+  const nav = document.getElementById('siteNav');
+  if(!btn || !nav) return;
+  function set(open){ nav.classList.toggle('open', open); btn.setAttribute('aria-expanded', open? 'true':'false'); }
+  btn.addEventListener('click', ()=> set(!nav.classList.contains('open')));
+  // Close on navigation click (for single-page feel)
+  nav.addEventListener('click', (e)=>{ if(e.target.tagName==='A') set(false); });
+});
+
 // ------- Arena Challenge: Memory / Code Guessing + Energy -------
 function setupArenaChallenge(){
   const wrap = document.getElementById('arenaChallenge');
