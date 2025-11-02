@@ -1,0 +1,168 @@
+<%- include('partials/header', { title: 'About the Auction' }) %>
+
+<section class="section">
+  <div class="container">
+    <h1 class="neon mega">About the Auction</h1>
+    <p class="tagline">A celebration of innovation and community spirit, powered by code and collaboration.</p>
+
+    <div class="two-col">
+      <div>
+        <h3>What is this auction?</h3>
+        <p>
+          The Battle of Bytes Auction brings teams and supporters together in a friendly, high-energy
+          bidding experience. Each bid fuels the momentum of the teams while showcasing creativity,
+          technical excellence, and the spirit of healthy competition.
+        </p>
+        <p>
+          Our interface blends a cinematic cyberpunk aesthetic with real-time updates to make the
+          experience immersive and accessible. From holographic tiles in the Arena to live progress
+          visuals, the auction is designed to be fun, fair, and exciting.
+        </p>
+      </div>
+      <div>
+        <h3>Purpose</h3>
+        <p>
+          This event aims to:
+        </p>
+        <ul>
+          <li>Encourage participation in coding, design, and problem-solving.</li>
+          <li>Showcase teamwork, leadership, and innovation across disciplines.</li>
+          <li>Build a supportive community that celebrates effort as much as outcomes.</li>
+          <li>Raise the bar for student-led tech culture through a modern, inclusive platform.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="neon">Honouring our Bidders</h2>
+    <p class="help">We appreciate the generosity and energy of every supporter listed here.</p>
+    <div class="cards">
+      <% bidders.forEach(function(b){ %>
+        <div class="card">
+          <h3><%= b.name %></h3>
+          <p class="meta"><%= b.team %></p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="participantsSection">
+  <div class="container">
+  <h2 class="neon">Participants</h2>
+    <div class="actions" style="margin-bottom:12px">
+      <% if (allParticipants && allParticipants.length && (!participants || allParticipants.length > participants.length)) { %>
+        <button class="btn" id="showAllParticipants" type="button">View All Participants</button>
+      <% } %>
+    </div>
+
+    <div id="participantsList">
+      <% if (participants && participants.length) { %>
+        <div class="gallery">
+          <% participants.forEach(function(p){ %>
+            <figure>
+              <img class="participant-img" src="<%= p.src %>" alt="Participant" />
+            </figure>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="note">No participant images found in <code>/public/images/Participants</code>. Add images and refresh.</p>
+      <% } %>
+    </div>
+
+    <% if (allParticipants && allParticipants.length) { %>
+      <div id="participantsAll" hidden>
+        <div class="actions" style="margin-bottom:12px">
+          <button class="btn" id="backToList" type="button">Back</button>
+        </div>
+        <div class="gallery">
+          <% allParticipants.forEach(function(p){ %>
+            <figure>
+              <img class="participant-img" src="<%= p.src %>" alt="Participant" />
+            </figure>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const showAllBtn = document.getElementById('showAllParticipants');
+    const backBtn = document.getElementById('backToList');
+    const list = document.getElementById('participantsList');
+    const all = document.getElementById('participantsAll');
+    if(showAllBtn && list && all){
+      showAllBtn.addEventListener('click', ()=>{ list.hidden = true; all.hidden = false; });
+    }
+    if(backBtn && list && all){
+      backBtn.addEventListener('click', ()=>{ all.hidden = true; list.hidden = false; });
+    }
+
+    // Image hover-enlarge overlay for participant photos
+    function ensureOverlay(){
+      let o = document.getElementById('imgZoomOverlay');
+      if(o) return o;
+      o = document.createElement('div');
+      o.id = 'imgZoomOverlay';
+      o.className = 'img-zoom-overlay';
+      o.innerHTML = '<img id="imgZoomTarget" alt="Participant enlarged" />';
+      document.body.appendChild(o);
+      // Close on pointer leave or click
+      o.addEventListener('click', hideOverlay);
+      o.addEventListener('pointerleave', hideOverlay);
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') hideOverlay(); });
+      return o;
+    }
+    function showOverlay(src){
+      const o = ensureOverlay();
+      const img = o.querySelector('#imgZoomTarget');
+      img.src = src;
+      o.hidden = false;
+      requestAnimationFrame(()=> o.classList.add('visible'));
+    }
+    function hideOverlay(){
+      const o = document.getElementById('imgZoomOverlay');
+      if(!o) return;
+      o.classList.remove('visible');
+      setTimeout(()=>{ o.hidden = true; }, 150);
+    }
+    // Show overlay on hover over any participant image (event delegation)
+    function hoverHandler(e){
+      const img = e.target.closest('img.participant-img');
+      if(!img) return;
+      showOverlay(img.src);
+    }
+    document.addEventListener('pointerover', hoverHandler);
+  })();
+  </script>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="neon">Glimpses</h2>
+    <p class="help">A quick look at moments and highlights from preparations and past events.</p>
+    <div class="actions" style="margin-bottom:12px">
+      <a class="btn" href="https://drive.google.com/drive/folders/1niVmqCRWqNVCStNHCfe_cePXotfRBArr" target="_blank" rel="noopener">Open for more photos</a>
+    </div>
+    <% if(gallery && gallery.length){ %>
+      <div class="gallery glimpses">
+        <% gallery.forEach(function(src){ %>
+          <figure>
+            <div class="glimpse-img-wrap">
+              <img class="glimpse-img" src="<%= src %>" alt="Auction glimpse" />
+            </div>
+            <figcaption>Captured moment</figcaption>
+          </figure>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="note">No photos found in <code>/public/images/auction</code>. Add images and refresh.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="t d">
+<title id="t">Bidders raising paddles</title>
+<desc id="d">Three abstract bidders with gradient paddles in a hall.</desc>
+<defs>
+  <linearGradient id="g1" x1="0" x2="1">
+    <stop offset="0" stop-color="#7aa2ff"/>
+    <stop offset="1" stop-color="#5be9b9"/>
+  </linearGradient>
+</defs>
+<rect width="640" height="480" fill="#0b1020"/>
+<g transform="translate(40 60)">
+  <rect x="0" y="280" width="560" height="80" rx="16" fill="#0f1734" stroke="#1b2450"/>
+  <!-- People -->
+  <g fill="#111a3a" stroke="#22306a">
+    <circle cx="140" cy="250" r="40"/>
+    <rect x="110" y="240" width="60" height="70" rx="18"/>
+
+    <circle cx="280" cy="230" r="40"/>
+    <rect x="250" y="220" width="60" height="90" rx="18"/>
+
+    <circle cx="420" cy="250" r="40"/>
+    <rect x="390" y="240" width="60" height="70" rx="18"/>
+  </g>
+  <!-- Paddles -->
+  <g>
+    <rect x="130" y="130" width="24" height="90" rx="8" fill="#1a2140"/>
+    <circle cx="142" cy="120" r="28" fill="url(#g1)"/>
+
+    <rect x="270" y="100" width="24" height="110" rx="8" fill="#1a2140"/>
+    <circle cx="282" cy="88" r="34" fill="url(#g1)"/>
+
+    <rect x="410" y="140" width="24" height="80" rx="8" fill="#1a2140"/>
+    <circle cx="422" cy="130" r="26" fill="url(#g1)"/>
+  </g>
+</g>
+</svg>

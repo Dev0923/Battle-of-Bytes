@@ -1,0 +1,47 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# Logs
+logs/
+*.log
+*.out
+*.pid
+
+# Runtime
+pids/
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*.local
+
+# VS Code
+.vscode/
+.history/
+
+# Build artifacts
+build/
+dist/
+.tmp/
+
+# Cache
+.cache/
+.eslintcache
+
+# Misc
+*.swp
+*.swo

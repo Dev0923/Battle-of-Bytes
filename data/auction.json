@@ -1,0 +1,76 @@
+{
+  "startTime": "2025-11-01T00:00:00.000Z",
+  "endTime": "2025-11-04T00:00:00.000Z",
+  "players": [
+    {
+      "id": "logic-luminaries",
+      "name": "Logic Luminaries",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "code-commanders",
+      "name": "Code Commanders",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "data-mavericks",
+      "name": "Data Mavericks",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "code-trail",
+      "name": "Code Trail",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "quantum-coders",
+      "name": "Quantum Coders",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "python-pioneers",
+      "name": "Python Pioneers",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "java-jesters",
+      "name": "Java Jesters",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "ruby-renegades",
+      "name": "Ruby Renegades",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "syntax-samurai",
+      "name": "Syntax Samurai",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    },
+    {
+      "id": "byte-busters",
+      "name": "Byte Busters",
+      "currentBid": 0,
+      "lastBidder": null,
+      "lastUpdated": null
+    }
+  ]
+}

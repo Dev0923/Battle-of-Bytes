@@ -1,0 +1,18 @@
+[
+  {
+    "id": "mhg0z3t5lkgesm",
+    "name": "Test User",
+    "email": "test@example.com",
+    "message": "Hello from self-test",
+    "createdAt": "2025-11-01T08:33:26.537Z",
+    "ip": "::1"
+  },
+  {
+    "id": "mhg25q89k65mjk",
+    "name": "dev",
+    "email": "dev034405@gmail.com",
+    "message": "hhjashkgadf",
+    "createdAt": "2025-11-01T09:06:35.145Z",
+    "ip": "::1"
+  }
+]

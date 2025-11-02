@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title || 'Campus Charity Auction' %></title>
+  <meta name="description" content="Auction event site with cyberpunk theme, live auction, and poll." />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/images/auction-gavel.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="<%= (typeof bodyClass !== 'undefined' && bodyClass) ? bodyClass : '' %>">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <img src="/images/auction-gavel.png" alt="Auction gavel icon" width="36" height="36" />
+        <span>Battle of Bytes</span>
+      </div>
+      <nav class="nav">
+    <a href="/">Home</a>
+  <a href="/auction">Create your team</a>
+  <a href="/auction/about">About Auction</a>
+  <a href="/arena">Arena</a>
+  <a href="/coordinators">Coordinators</a>
+  <a href="/teams">Teams</a>
+        <a href="/poll">Poll</a>
+        <a class="cta" href="/enquiry">Enquiry</a>
+      </nav>
+    </div>
+  </header>
+  <main>

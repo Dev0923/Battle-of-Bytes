@@ -1,0 +1,35 @@
+<%- include('partials/header', { title: 'Battle of Bytes — Home', bodyClass: 'page-home' }) %>
+
+<section class="landing">
+  <!-- Background video layer -->
+  <div class="home-video-layer" aria-hidden="true">
+    <video id="homeBgVideo" class="home-bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/media/home-bg.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <div class="container landing-inner">
+    <div class="title-wrap">
+      <h1 class="mega neon-title holo-title" data-text="Battle of Bytes">
+        <span class="title-base">Battle <span>of</span> Bytes</span>
+        <span class="title-rgb title-r" aria-hidden="true">Battle <span>of</span> Bytes</span>
+        <span class="title-rgb title-b" aria-hidden="true">Battle <span>of</span> Bytes</span>
+        <span class="title-scan" aria-hidden="true"></span>
+      </h1>
+      <% if (query && query.success) { %>
+        <div class="status" style="color:#5be9b9"><%= query.success %></div>
+      <% } %>
+      <div class="cta-row">
+  <a class="btn neon-border" href="/arena">Enter Arena</a>
+  <a class="btn neon-border" href="/auction">Create your team</a>
+        <a class="btn neon-border" href="/coordinators">Coordinators</a>
+        <a class="btn neon-border" href="/teams">View Teams</a>
+        <a class="btn neon-border" href="/poll">Cast a Vote</a>
+        <a class="btn" href="/enquiry">Enquiry</a>
+      </div>
+    </div>
+  </div>
+  <div class="landing-vfx" aria-hidden="true"></div>
+  <div class="lighting-vfx" aria-hidden="true"></div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,27 @@
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2025 Birla Institute of Technology, Mesra • Cyberpunk edition</small>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+        <button id="ambienceToggle" class="btn" style="padding:8px 12px">Toggle Ambience</button>
+        <button id="ambienceStop" class="btn" style="padding:8px 12px;background:linear-gradient(135deg,#ff9b9b,#ff2b6e)">Stop Ambience</button>
+      </div>
+      <div class="help" style="margin-top:8px">Tip: For a sound experience, click “Toggle Ambience”. Audio starts after your first click and stays subtle.</div>
+    </div>
+  </footer>
+  <!-- Global subtle cyberpunk background (hidden on Home) -->
+  <div class="global-bg" aria-hidden="true">
+    <div class="bg-video">
+      <video id="globalBgVideo" class="global-bg-video" autoplay muted loop playsinline preload="metadata">
+        <source src="/images/Cyberpunk_D_Background_Video_Generation.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="bg-glow"></div>
+    <div class="bg-scan"></div>
+    <div class="bg-lines"></div>
+  </div>
+  <!-- AI Eye (global) -->
+  <div id="aiEye" class="ai-eye" aria-hidden="true"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

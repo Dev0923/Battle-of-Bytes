@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+<title id="title">Auctioneer on stage</title>
+<desc id="desc">Abstract auctioneer silhouette with podium and spotlight.</desc>
+<defs>
+  <linearGradient id="grad" x1="0" x2="1">
+    <stop offset="0" stop-color="#7aa2ff"/>
+    <stop offset="1" stop-color="#5be9b9"/>
+  </linearGradient>
+</defs>
+<rect width="640" height="480" fill="#0b1020"/>
+<g>
+  <path d="M0,480 L640,480 L640,340 Q320,260 0,340 Z" fill="#0f1734"/>
+  <ellipse cx="320" cy="360" rx="160" ry="30" fill="#111a3a"/>
+  <g transform="translate(260 130)">
+    <rect x="40" y="120" width="56" height="80" rx="10" fill="#111a3a" stroke="#20306a"/>
+    <rect x="0" y="80" width="136" height="50" rx="12" fill="url(#grad)"/>
+    <circle cx="68" cy="60" r="30" fill="#18224b" stroke="#7aa2ff"/>
+    <rect x="62" y="10" width="12" height="40" rx="6" fill="#7aa2ff"/>
+  </g>
+  <g opacity=".25">
+    <path d="M80,0 L320,320 L560,0" fill="url(#grad)"/>
+  </g>
+</g>
+</svg>

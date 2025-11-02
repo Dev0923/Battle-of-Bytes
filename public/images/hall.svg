@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="t d">
+<title id="t">Auction hall</title>
+<desc id="d">Stylized interior of an auction hall with lights.</desc>
+<defs>
+  <linearGradient id="g" x1="0" x2="1">
+    <stop offset="0" stop-color="#7aa2ff"/>
+    <stop offset="1" stop-color="#5be9b9"/>
+  </linearGradient>
+</defs>
+<rect width="640" height="480" fill="#0b1020"/>
+<g>
+  <rect x="40" y="80" width="560" height="280" rx="18" fill="#0f1734" stroke="#1b2450"/>
+  <rect x="70" y="110" width="500" height="220" rx="12" fill="#0d1430"/>
+  <g fill="url(#g)" opacity=".6">
+    <circle cx="120" cy="120" r="6"/>
+    <circle cx="200" cy="120" r="6"/>
+    <circle cx="280" cy="120" r="6"/>
+    <circle cx="360" cy="120" r="6"/>
+    <circle cx="440" cy="120" r="6"/>
+    <circle cx="520" cy="120" r="6"/>
+  </g>
+  <rect x="120" y="340" width="400" height="20" rx="10" fill="#111a3a"/>
+</g>
+</svg>

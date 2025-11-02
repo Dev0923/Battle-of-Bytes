@@ -1,0 +1,47 @@
+<%- include('partials/header', { title: 'Digital Auction Arena' }) %>
+
+<section id="arena" class="section arena-wrap">
+  <!-- Cinematic intro overlay -->
+  <div id="arenaIntro" class="arena-intro" aria-live="polite">
+    <div class="intro-scan"></div>
+    <div class="intro-inner">
+      <div class="intro-line">System Access Granted</div>
+      <div class="intro-sub">Decrypting Auction Matrix…</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="neon">Arena of Algorithms</h2>
+    <p class="tagline">Click a hologram to enter a team zone.</p>
+  </div>
+
+  <!-- 3D arena scene -->
+  <div class="arena-scene" id="arenaScene">
+    <div class="arena-camera" id="arenaCamera">
+      <div class="arena-grid" id="arenaGrid">
+        <% teams.forEach((t,i)=> { if (t.slug === 'code-trail') return; %>
+          <button class="holo-tile" data-slug="<%= t.slug %>" data-name="<%= t.name %>" data-tag="<%= t.tagline %>" data-img="/images/teams/<%= t.slug %>.jpg" data-coord="<%= i %>">
+            <span class="tile-img" aria-hidden="true" style="background-image:url('/images/teams/<%= t.slug %>.jpg')"></span>
+            <span class="tile-scan" aria-hidden="true"></span>
+            <span class="tile-name"><%= t.name %></span>
+          </button>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team details panel -->
+  <div id="arenaPanel" class="arena-panel" hidden>
+    <div class="panel-inner">
+      <h3 id="panelName" class="neon"></h3>
+      <img id="panelImg" alt="Team emblem" style="max-width:260px;border:1px solid #3b2466;border-radius:12px;margin:8px 0"/>
+      <p id="panelTag" class="tagline"></p>
+      <div class="actions">
+        <a class="btn" id="panelBid" href="/auction">Place a Bid</a>
+        <button class="btn" id="panelClose" type="button">Back to Arena</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

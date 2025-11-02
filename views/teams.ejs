@@ -1,0 +1,23 @@
+<%- include('partials/header', { title: 'Teams — Battle of Bytes' }) %>
+<section class="section">
+  <div class="container">
+    <h2 class="neon">Teams</h2>
+    <p class="tagline">Meet the squads powering Battle of Bytes.</p>
+    <p class="tagline">Click on the team cards to learn more about each squad.</p>
+    <div class="team-grid">
+      <% teams.forEach(t => { if (t.slug === 'code-trail') return; %>
+        <a class="team-card holo" href="/teams/<%= t.slug %>">
+          <div class="team-media">
+            <img class="team-logo" src="/images/teams/<%= t.slug %>.jpg" alt="<%= t.name %> logo" />
+            <span class="scanline" aria-hidden="true"></span>
+            <span class="gloss" aria-hidden="true"></span>
+          </div>
+          <h3 class="team-title" data-text="<%= t.name %>"><%= t.name %></h3>
+          <div class="meta"><strong>Coordinators:</strong> <%= t.coordinators %></div>
+          <div class="tag">“<%= t.tagline %>”</div>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

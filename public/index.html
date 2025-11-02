@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>English Auction — Campus Charity Gala</title>
+  <meta name="description" content="A showcase of our English Auction event with images, story, team credits, and a functional enquiry form." />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="/images/auction-gavel.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="branding">
+        <img src="/images/auction-gavel.svg" alt="Auction gavel icon" width="36" height="36" />
+        <span>Campus Charity Auction</span>
+      </div>
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#team">Team</a>
+        <a class="cta" href="#enquiry">Enquiry</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>English Auction Night 2025</h1>
+          <p>
+            An exhilarating evening where bids rose with excitement and every paddle raised supported our
+            student scholarship fund. Explore highlights, meet the team, and send us your questions below.
+          </p>
+          <a class="btn" href="#enquiry">Ask a question</a>
+        </div>
+        <div class="hero-art">
+          <img src="/images/auctioneer.svg" alt="Auctioneer on stage with bidders" />
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container two-col">
+        <div>
+          <h2>What is an English Auction?</h2>
+          <p>
+            Our event followed the classic <strong>English Auction</strong> format: the auctioneer announces a starting price and
+            participants openly place progressively higher bids. The highest bid at the fall of the gavel wins.
+          </p>
+          <h3>Purpose of the auction</h3>
+          <p>
+            Proceeds support campus scholarships, innovation grants, and community outreach. Beyond fundraising,
+            the evening celebrates craftsmanship and generosity from students, alumni, and local partners.
+          </p>
+        </div>
+        <div>
+          <h3>Who was in the room?</h3>
+          <ul>
+            <li><strong>Auctioneer:</strong> The energetic host guiding the pace and confirming winning bids.</li>
+            <li><strong>Bidders:</strong> Students, alumni, and patrons—paddles up, strategies out in the open.</li>
+            <li><strong>Participants:</strong> Artists, makers, and clubs who consigned unique items and experiences.</li>
+          </ul>
+          <div class="note">Creative summary — not an exhaustive list.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="section alt">
+      <div class="container">
+        <h2>Gallery</h2>
+        <p>Moments from the night. All images are vector and fast-loading.</p>
+        <div class="gallery">
+          <figure>
+            <img src="/images/auction-gavel.svg" alt="Gavel striking the block" />
+            <figcaption>Sold! The decisive gavel.</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/bidders.svg" alt="Bidders raising paddles" />
+            <figcaption>Paddles up, bids rising.</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/hall.svg" alt="Auction hall" />
+            <figcaption>Our buzzing hall.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="auction" class="section">
+      <div class="container">
+        <h2 class="neon">Live Auction Simulation</h2>
+        <p>Bid virtually on featured players. Highest bid at the end of the 72-hour window wins.</p>
+        <div class="countdown" id="auctionCountdown" aria-live="polite"></div>
+        <div id="players" class="cards"></div>
+        <form id="bidForm" class="form bid-form" autocomplete="off">
+          <div class="field">
+            <label for="bidderName">Your Name</label>
+            <input id="bidderName" name="bidderName" type="text" minlength="2" required />
+          </div>
+          <div class="field">
+            <label for="playerId">Select Player</label>
+            <select id="playerId" name="playerId" required></select>
+          </div>
+          <div class="field">
+            <label for="amount">Your Bid (₹)</label>
+            <input id="amount" name="amount" type="number" min="1" step="1" required />
+          </div>
+          <div class="actions">
+            <button class="btn neon-border" type="submit">Place Bid</button>
+            <span class="help">Minimum increment is ₹1 over the current highest bid.</span>
+          </div>
+          <div id="bidStatus" class="status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="team" class="section">
+      <div class="container">
+        <h2>Credits</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Event Coordinators</h3>
+            <ul>
+              <li>Riya Sen — Logistics</li>
+              <li>Arjun Mehta — Partnerships</li>
+              <li>Maya Kapoor — Creative</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Faculty Coordinator</h3>
+            <p>Dr. Kavita Rao</p>
+          </article>
+          <article class="card">
+            <h3>Special Faculty Members</h3>
+            <ul>
+              <li>Prof. S. Iyer</li>
+              <li>Prof. N. Banerjee</li>
+              <li>Prof. L. Fernandes</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="enquiry" class="section alt">
+      <div class="container">
+        <h2>Enquiry Form</h2>
+        <p>Have a question or feedback? Send us a note and we’ll reply soon.</p>
+        <form id="enquiryForm" class="form" aria-describedby="formHelp">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required minlength="2" />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" minlength="5" required></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit">Send</button>
+            <span id="formHelp" class="help">We’ll never share your email.</span>
+          </div>
+          <div id="formStatus" role="status" aria-live="polite" class="status"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="poll" class="section">
+      <div class="container">
+        <h2 class="neon">Fan Poll</h2>
+        <p>Vote for your favorite team. Results reset daily.</p>
+        <form id="pollForm" class="form poll-form">
+          <div class="actions">
+            <button type="button" class="btn" data-option="TeamA">Team A</button>
+            <button type="button" class="btn" data-option="TeamB">Team B</button>
+            <button type="button" class="btn" data-option="TeamC">Team C</button>
+          </div>
+        </form>
+        <div id="pollResults" class="poll-results" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2025 Campus Charity Auction • Built for the Auction Event project</small>
+    </div>
+  </footer>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

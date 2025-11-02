@@ -1,0 +1,24 @@
+<%- include('partials/header', { title: 'Who’ll win the auction? — Poll' }) %>
+<section id="poll" class="section">
+  <div class="container">
+    <h2 class="neon" style="text-shadow:0 0 16px rgba(0,240,255,.35), 0 0 22px rgba(255,43,208,.25)">🎯 CAST YOUR VOTE: WHO WILL MASTER THE BATTLE OF BYTES?</h2>
+    <p class="tagline">Daily poll — resets automatically each day (<%= day %>).</p>
+    <form id="pollForm" class="form poll-form">
+      <div class="poll-grid">
+        <% teams.forEach(t => { %>
+          <button type="button" class="poll-tile" data-option="<%= t.slug %>">
+            <span class="label"><%= t.name %></span>
+            <span class="scan"></span>
+          </button>
+        <% }) %>
+      </div>
+    </form>
+
+    <div class="poll-scene">
+      <div id="pollResults" class="poll-results" data-labels='<%- JSON.stringify(Object.fromEntries(teams.map(t => [t.slug, t.name]))) %>' data-initial='<%- JSON.stringify(results) %>'></div>
+      <div class="poll-figure" aria-hidden="true"></div>
+    </div>
+    <div id="voteTicker" class="vote-ticker" aria-live="polite"></div>
+  </div>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,65 @@
+<%- include('partials/header', { title: 'Coordinators — Battle of Bytes' }) %>
+
+<section class="section">
+  <div class="container">
+    <h2 class="neon">Event & Faculty Coordinators</h2>
+    <p class="tagline">Reach out to the core team behind Battle of Bytes.</p>
+
+    <h3 style="margin-top:20px">Faculty Coordinator</h3>
+    <div class="team-grid" style="margin-top:8px">
+      <% coordinators.faculty.forEach(c => { %>
+        <article class="team-card holo">
+          <% if (c.img) { %>
+            <div class="team-media">
+              <img class="team-logo" src="<%= c.img %>" alt="<%= c.name %> photo" />
+              <span class="scanline"></span>
+              <span class="gloss"></span>
+            </div>
+          <% } %>
+          <h3 style="margin:8px 0 6px">👤 <%= c.name %></h3>
+        </article>
+      <% }) %>
+    </div>
+
+    <h3 style="margin-top:28px">Senior Coordinator</h3>
+    <div class="team-grid" style="margin-top:8px">
+      <% coordinators.senior.forEach(c => { %>
+        <article class="team-card">
+          <h3>👤 <%= c.name %></h3>
+          <% if (c.phone) { %>
+            <div class="meta">📞 <a href="tel:<%= c.phone %>"><%= c.phone %></a></div>
+          <% } %>
+        </article>
+      <% }) %>
+    </div>
+
+    <h3 style="margin-top:28px">Student Coordinators</h3>
+    <div class="team-grid" style="margin-top:8px">
+      <% coordinators.students.forEach(c => { %>
+        <article class="team-card">
+          <h4 style="margin:4px 0">👤 <%= c.name %></h4>
+          <% if (c.phone) { %>
+            <div class="meta">📞 <a href="tel:<%= c.phone %>"><%= c.phone %></a></div>
+          <% } %>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- Head Coordinators visual card -->
+<section class="section" aria-labelledby="headCoordTitle">
+  <div class="container">
+    <h3 id="headCoordTitle" class="neon-sub" style="text-align:center;margin:16px 0 10px">Meet the Team</h3>
+  </div>
+  <div class="coord-hero">
+    <div class="coord-card" role="img" aria-label="Head Coordinators">
+      <div class="coord-media">
+        <img src="/images/head%20cordinators.png" alt="Head Coordinators" />
+        <span class="coord-scan" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

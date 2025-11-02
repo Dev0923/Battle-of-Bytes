@@ -1,0 +1,164 @@
+<%- include('partials/header', { title: 'Create your team — Battle of Bytes' }) %>
+<section id="auction" class="section">
+  <div class="container">
+    <div id="teamRulesOverlay" class="rules-overlay" role="dialog" aria-modal="true" aria-labelledby="teamRulesTitle">
+      <div class="rules-modal">
+        <h3 id="teamRulesTitle">Team creation rules</h3>
+        <p>There will be a total of 60 students participating in the auction.</p>
+        <p>Each team must select members as follows:</p>
+        <ul>
+          <li>2 members from B.Tech 4th Year / MCA 1st & 2nd Year / M.Sc.</li>
+          <li>2 members from B.Tech 3rd Year / BCA 3rd Year</li>
+          <li>2 members from B.Tech 2nd Year / BCA 2nd Year</li>
+        </ul>
+        <p><strong>Total: 6 members per team</strong></p>
+        <p class="rules-note">Teams must strictly follow the year-wise distribution during selection.</p>
+        <div class="rules-actions">
+          <button id="rulesOkBtn" class="btn" type="button" aria-label="OK, got it">OK</button>
+        </div>
+      </div>
+    </div>
+    <h2 class="neon">Create your own team</h2>
+
+    <!-- Choose existing team name -->
+    <section class="form team-name-form" id="teamNameSection" aria-labelledby="teamNameTitle" style="margin-top:12px">
+      <h3 id="teamNameTitle" class="neon-sub" style="margin-bottom:6px">Choose your team name</h3>
+      <p class="help">Pick a name from the existing list of teams.</p>
+      <div class="field">
+        <label for="teamNameSelect">Team name</label>
+        <select id="teamNameSelect" required>
+          <option value="" disabled selected>Select a team name</option>
+          <% (teams || state.players).forEach(t => { %>
+            <option value="<%= t.slug || t.id %>"><%= t.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="saveTeamName">Save name</button>
+        <span id="teamNameStatus" class="help" aria-live="polite"></span>
+      </div>
+      <div class="note" id="currentTeamName" hidden>Your current team name: <strong></strong></div>
+    </section>
+    
+    <!-- 4th Year selection (FIRST) -->
+    <section id="year4Section" class="form yourteam-year" aria-labelledby="year4Title" hidden>
+      <h3 id="year4Title" class="neon-sub" style="margin:12px 0 6px">Select 2 members — 4th Year</h3>
+      <div class="credits" style="margin:4px 0 8px">
+        <strong>Credits:</strong> 4500 • <strong>Remaining:</strong> <span id="creditsRemaining">4500</span>
+      </div>
+      <% if ((year4||[]).length) { %>
+        <div class="full-bleed">
+        <div id="year4Grid" class="cards yourteam-grid">
+          <% year4.forEach((src, idx) => { %>
+            <div class="card yt-card" data-id="y4-<%= idx %>">
+              <figure>
+                <img src="<%= src %>" alt="4th Year candidate"/>
+              </figure>
+              <div class="yt-controls">
+                <label class="price-label" hidden>
+                  Bid (creds)
+                  <input type="number" class="price-input" min="0" step="1" placeholder="0" />
+                </label>
+                <button type="button" class="btn select-btn">Select</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        </div>
+        <div class="help" id="year4Help" aria-live="polite">Choose exactly 2 cards and enter their bids.</div>
+        <div class="actions" style="margin-top:10px">
+          <button type="button" id="year4Next" class="btn" disabled>Next</button>
+        </div>
+      <% } else { %>
+        <p class="note">No images found in <code>/public/images/your team/4th year</code>. Add images and refresh.</p>
+      <% } %>
+    </section>
+    
+    <!-- 3rd Year selection -->
+    <section id="year3Section" class="form yourteam-year" aria-labelledby="year3Title" hidden>
+      <h3 id="year3Title" class="neon-sub" style="margin:12px 0 6px">Select 2 members — 3rd Year</h3>
+      <div class="credits" style="margin:4px 0 8px">
+        <strong>Credits:</strong> <span id="startingCredits3">4500</span> • <strong>Remaining:</strong> <span id="creditsRemaining3">4500</span>
+      </div>
+      <% if ((year3||[]).length) { %>
+        <div class="full-bleed">
+        <div id="year3Grid" class="cards yourteam-grid">
+          <% year3.forEach((src, idx) => { %>
+            <div class="card yt-card" data-id="y3-<%= idx %>">
+              <figure>
+                <img src="<%= src %>" alt="3rd Year candidate"/>
+              </figure>
+              <div class="yt-controls">
+                <label class="price-label" hidden>
+                  Bid (creds)
+                  <input type="number" class="price-input" min="0" step="1" placeholder="0" />
+                </label>
+                <button type="button" class="btn select-btn">Select</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        </div>
+        <div class="help" id="year3Help" aria-live="polite">Choose exactly 2 cards and enter their bids.</div>
+        <div class="actions" style="margin-top:10px">
+          <button type="button" id="year3Next" class="btn" disabled>Next</button>
+        </div>
+      <% } else { %>
+        <p class="note">No images found in <code>/public/images/your team/3rd year</code>. Add images and refresh.</p>
+      <% } %>
+    </section>
+    
+    <!-- 2nd Year selection -->
+    <section id="year2Section" class="form yourteam-year" aria-labelledby="year2Title" hidden>
+      <h3 id="year2Title" class="neon-sub" style="margin:12px 0 6px">Select 2 members — 2nd Year</h3>
+      <div class="credits" style="margin:4px 0 8px">
+        <strong>Credits:</strong> <span id="startingCredits2">4500</span> • <strong>Remaining:</strong> <span id="creditsRemaining2">4500</span>
+      </div>
+      <% if ((year2||[]).length) { %>
+        <div class="full-bleed">
+        <div id="year2Grid" class="cards yourteam-grid">
+          <% year2.forEach((src, idx) => { %>
+            <div class="card yt-card" data-id="y2-<%= idx %>">
+              <figure>
+                <img src="<%= src %>" alt="2nd Year candidate"/>
+              </figure>
+              <div class="yt-controls">
+                <label class="price-label" hidden>
+                  Bid (creds)
+                  <input type="number" class="price-input" min="0" step="1" placeholder="0" />
+                </label>
+                <button type="button" class="btn select-btn">Select</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        </div>
+        <div class="help" id="year2Help" aria-live="polite">Choose exactly 2 cards and enter their bids.</div>
+      <% } else { %>
+        <p class="note">No images found in <code>/public/images/your team/2nd year</code>. Add images and refresh.</p>
+      <% } %>
+    </section>
+
+    <!-- Finalize: Create Team -->
+    <section id="createTeamSection" class="form" aria-live="polite" hidden>
+      <div class="actions" id="createTeamActions">
+        <button type="button" id="createTeamBtn" class="btn">Create Team</button>
+        <span id="createTeamStatus" class="help" style="margin-left:8px"></span>
+      </div>
+    </section>
+    
+    <!-- Team Preview Overlay -->
+    <div id="teamPreview" class="team-preview-overlay" role="dialog" aria-modal="true" aria-labelledby="tpTitle" hidden>
+      <div class="team-preview-modal" role="document">
+        <div class="tp-head">
+          <h3 id="tpTitle" class="neon-sub" style="margin:0">Your Team</h3>
+          <button type="button" id="tpClose" class="btn">Close</button>
+        </div>
+        <div id="tpMeta" class="tp-meta"></div>
+        <div id="tpGrid" class="team-preview-grid"></div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+<%- include('partials/footer') %>
