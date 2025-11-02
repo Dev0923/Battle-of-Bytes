@@ -330,7 +330,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--brand);box-shadow:0 0
   radial-gradient(800px 320px at 80% -10%,rgba(255,43,208,.14),transparent 40%)}
 .landing-inner{display:flex;align-items:center;justify-content:center;text-align:center}
 .mega{font-size:clamp(36px,8vw,96px);margin:0 0 8px;line-height:1.05}
-.neon-title{font-weight:800;background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(0,240,255,.35),0 0 28px rgba(255,43,208,.25)}
+.neon-title{font-weight:900;background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(0,240,255,.35),0 0 28px rgba(255,43,208,.25)}
 .neon-title span{color:transparent;filter:brightness(1.15)}
 .tagline{color:var(--muted);margin:0 0 20px}
 .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
