@@ -331,6 +331,16 @@ input:focus,textarea:focus,select:focus{border-color:var(--brand);box-shadow:0 0
 .landing-inner{display:flex;align-items:center;justify-content:center;text-align:center}
 .mega{font-size:clamp(36px,8vw,96px);margin:0 0 8px;line-height:1.05}
 .neon-title{font-weight:900;background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(0,240,255,.35),0 0 28px rgba(255,43,208,.25)}
+.page-home .mega{font-size:clamp(42px,8vw,100px)}
+/* Stronger highlight and edge definition for readability */
+.page-home .neon-title{
+  -webkit-text-stroke: 1px rgba(0,0,0,.35);
+  text-shadow:
+    0 0 1px rgba(0,0,0,.9),
+    0 1px 2px rgba(0,0,0,.7),
+    0 0 22px rgba(0,240,255,.50),
+    0 0 36px rgba(255,43,208,.35);
+}
 .neon-title span{color:transparent;filter:brightness(1.15)}
 .tagline{color:var(--muted);margin:0 0 20px}
 .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
