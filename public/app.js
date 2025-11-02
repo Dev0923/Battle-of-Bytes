@@ -1068,7 +1068,10 @@ function setupStartupSequence(){
   run();
 }
 
-document.addEventListener('DOMContentLoaded', setupStartupSequence);
+// Disable the loading animation and mark the page as ready immediately
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{ document.body.classList.add('boot-complete'); }catch{}
+});
 
 // ------- Home Dynamic Lighting (cursor-driven reflections) -------
 function setupHomeLighting(){
