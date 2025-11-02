@@ -70,6 +70,30 @@
       </div>
     </div>
   </section>
+
+  <!-- Logic Rush: Quick Logic Quiz Battle -->
+  <section id="logicRush" class="section logic-rush">
+    <div class="container">
+      <h3 class="neon">Logic Rush — Quick Logic Quiz Battle</h3>
+      <p class="tagline">5-second brain bursts. Choose fast. Win faster. Leaderboard updates live.</p>
+
+      <div class="lr-wrap">
+        <div class="lr-left">
+          <div class="timer-ring" title="Countdown">
+            <div class="ring" id="lrRing"></div>
+            <div class="ring-num" id="lrTime">5</div>
+          </div>
+          <div class="lr-question" id="lrQuestion">Waiting for next question…</div>
+          <div class="lr-options" id="lrOptions" role="group" aria-label="Logic Rush options"></div>
+          <div id="lrFeedback" class="lr-feedback" aria-live="polite"></div>
+        </div>
+        <div class="lr-right">
+          <h4 class="neon" style="margin:0 0 8px">Leaderboard</h4>
+          <ol class="lr-board" id="lrBoard" aria-live="polite"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <%- include('partials/footer') %>

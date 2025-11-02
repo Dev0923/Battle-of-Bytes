@@ -1158,6 +1158,90 @@ function setupArenaChallenge(){
 
 document.addEventListener('DOMContentLoaded', setupArenaChallenge);
 
+// ------- Logic Rush (Socket.IO client) -------
+function setupLogicRush(){
+  const root = document.getElementById('logicRush');
+  if(!root) return;
+  // Ensure socket.io client script is available (served by server)
+  const ioGlobal = window.io;
+  if(!ioGlobal){
+    // inject script then init
+    const s = document.createElement('script'); s.src = '/socket.io/socket.io.js'; s.onload = init; document.head.appendChild(s);
+  }else{ init(); }
+
+  function init(){
+    const socket = window.io();
+    const qEl = document.getElementById('lrQuestion');
+    const optEl = document.getElementById('lrOptions');
+    const fbEl = document.getElementById('lrFeedback');
+    const ring = document.getElementById('lrRing');
+    const timeEl = document.getElementById('lrTime');
+    const boardEl = document.getElementById('lrBoard');
+    let deadline = 0; let raf=null;
+
+    function renderBoard(board){
+      if(!boardEl) return;
+      boardEl.innerHTML = '';
+      for(const row of (board||[])){
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${row.name}</span><strong>${row.score} ⚡</strong>`;
+        boardEl.appendChild(li);
+      }
+    }
+
+    function tick(){
+      raf = null;
+      const now = Date.now();
+      const remain = Math.max(0, deadline - now);
+      const secs = Math.ceil(remain/1000);
+      timeEl.textContent = String(secs);
+      const pct = remain / 5000; // 5s window
+      ring.style.setProperty('--pct', Math.max(0, Math.min(1, pct))*100);
+      if(remain>0) raf = requestAnimationFrame(tick);
+    }
+
+    function renderState(state){
+      if(state?.current){
+        qEl.textContent = state.current.q;
+        optEl.innerHTML = '';
+        state.current.opts.forEach((t,idx)=>{
+          const b = document.createElement('button');
+          b.className = 'btn-ghost'; b.textContent = t; b.addEventListener('click', ()=> submit(idx));
+          optEl.appendChild(b);
+        });
+        deadline = state.current.deadline || 0; if(raf) cancelAnimationFrame(raf); tick();
+      }else{
+        qEl.textContent = 'Waiting for next question…'; optEl.innerHTML = '';
+        timeEl.textContent = '0'; ring.style.setProperty('--pct', 0);
+      }
+      renderBoard(state?.board);
+    }
+
+    function submit(idx){
+      // disable buttons after click
+      optEl.querySelectorAll('button').forEach(b=> b.disabled = true);
+      socket.emit('lr:answer', idx);
+    }
+
+    socket.on('lr:hello', (_me)=>{});
+    socket.on('lr:state', renderState);
+    socket.on('lr:leaderboard', (p)=> renderBoard(p.board));
+    socket.on('lr:reveal', (p)=>{
+      // highlight correct locally
+      const idx = Number(p.a);
+      const btns = [...optEl.querySelectorAll('button')];
+      btns.forEach((b,i)=> b.style.outline = (i===idx)? '2px solid var(--brand)': '');
+    });
+    socket.on('lr:feedback', (p)=>{
+      fbEl.textContent = p.ok? `+50 Energy` : `-20 HP`;
+      fbEl.classList.toggle('good', !!p.ok); fbEl.classList.toggle('bad', !p.ok);
+      setTimeout(()=>{ fbEl.textContent=''; fbEl.classList.remove('good','bad'); }, 1000);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', setupLogicRush);
+
 // ------- Home Dynamic Lighting (cursor-driven reflections) -------
 function setupHomeLighting(){
   const isHome = document.body.classList.contains('page-home');

@@ -1,4 +1,6 @@
 import express from 'express';
+import http from 'http';
+import { Server as IOServer } from 'socket.io';
 import fs from 'fs';
 import path from 'path';
 import helmet from 'helmet';
@@ -504,8 +506,88 @@ app.get('*', (req, res, next) => {
   res.redirect('/');
 });
 
+// Logic Rush (live quiz via Socket.IO)
+function attachLogicRush(io){
+  // Simple question bank (DSA/logic)
+  const QUESTIONS = [
+    { q:'Which data structure works on FIFO?', opts:['Stack','Queue','Tree','Graph'], a:1 },
+    { q:'Time complexity of binary search?', opts:['O(n)','O(log n)','O(n log n)','O(1)'], a:1 },
+    { q:'Which uses LIFO?', opts:['Queue','Heap','Stack','Trie'], a:2 },
+    { q:'Best DS for BFS?', opts:['Stack','Queue','Set','Priority Queue'], a:1 },
+    { q:'Which sorting is stable?', opts:['Merge Sort','Quick Sort','Heap Sort','Selection Sort'], a:0 },
+    { q:'Hash table expected lookup?', opts:['O(1)','O(n)','O(log n)','O(n log n)'], a:0 },
+  ];
+  const ROUND_MS = 7000; // total round length
+  const ANSWER_MS = 5000; // answer window
+  let round = 0;
+  let current = null; // {id,q,opts,a,deadline}
+  const board = new Map(); // socketId -> { name, score, hp }
+  const answered = new Map(); // round -> Set(socketId)
+
+  function pick(){ return QUESTIONS[Math.floor(Math.random()*QUESTIONS.length)]; }
+  function broadcastState(){ io.emit('lr:state', { round, current: current? { q:current.q, opts: current.opts, deadline: current.deadline }: null, board: getBoard() }); }
+  function getBoard(){
+    const arr = [...board.entries()].map(([id,v])=>({ id, name:v.name, score:v.score, hp:v.hp }));
+    arr.sort((a,b)=> b.score - a.score);
+    return arr.slice(0, 10);
+  }
+
+  function startRound(){
+    round++;
+    const base = pick();
+    current = { q: base.q, opts: base.opts, a: base.a, deadline: Date.now() + ANSWER_MS };
+    answered.set(round, new Set());
+    broadcastState();
+    setTimeout(()=>{ endRound(); }, ANSWER_MS);
+    setTimeout(()=>{ // small gap before next round
+      startRound();
+    }, ROUND_MS);
+  }
+  function endRound(){
+    if(!current) return;
+    io.emit('lr:reveal', { a: current.a });
+    current = null;
+    broadcastState();
+  }
+
+  io.on('connection', (socket)=>{
+    const name = `Player-${socket.id.slice(-4)}`;
+    if(!board.has(socket.id)) board.set(socket.id, { name, score:0, hp:100 });
+    socket.emit('lr:hello', { id: socket.id, name: board.get(socket.id).name });
+    broadcastState();
+
+    socket.on('lr:answer', (idx)=>{
+      if(!current) return;
+      const now = Date.now();
+      if(now > current.deadline) return; // too late
+      const seen = answered.get(round) || new Set();
+      if(seen.has(socket.id)) return; // one answer per round
+      seen.add(socket.id); answered.set(round, seen);
+      const p = board.get(socket.id) || { name:`Player-${socket.id.slice(-4)}`, score:0, hp:100 };
+      const correct = Number(idx) === Number(current.a);
+      if(correct){ p.score += 50; }
+      else { p.hp = Math.max(0, p.hp - 20); }
+      board.set(socket.id, p);
+      // feedback to the player
+      socket.emit('lr:feedback', { ok: correct, delta: correct? '+50 Energy' : '-20 HP' });
+      // update board for everyone
+      io.emit('lr:leaderboard', { board: getBoard() });
+    });
+
+    socket.on('disconnect', ()=>{
+      // keep their score; could prune if needed
+    });
+  });
+
+  // kick off loop if not running
+  setTimeout(startRound, 1200);
+}
+
 function startServer(port, attempts = 0){
-  const server = app.listen(port, () => {
+  const server = http.createServer(app);
+  const io = new IOServer(server, { cors: { origin: '*' } });
+  attachLogicRush(io);
+  server.listen(port, () => {
     console.log(`Auction site running at http://localhost:${port}`);
   });
   server.on('error', (err)=>{
