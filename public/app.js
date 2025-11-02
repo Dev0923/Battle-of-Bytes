@@ -1177,7 +1177,14 @@ function setupLogicRush(){
     const ring = document.getElementById('lrRing');
     const timeEl = document.getElementById('lrTime');
     const boardEl = document.getElementById('lrBoard');
+    const startPanel = document.getElementById('lrStartPanel');
+    const startBtn = document.getElementById('lrStart');
+    const nameInput = document.getElementById('lrName');
+    const resultPanel = document.getElementById('lrResult');
+    const summary = document.getElementById('lrSummary');
+    const restartBtn = document.getElementById('lrRestart');
     let deadline = 0; let raf=null;
+    let started = false; let attempts = 0; let correct = 0;
 
     function renderBoard(board){
       if(!boardEl) return;
@@ -1207,7 +1214,7 @@ function setupLogicRush(){
         state.current.opts.forEach((t,idx)=>{
           const b = document.createElement('button');
           b.className = 'btn-ghost'; b.textContent = t; b.addEventListener('click', ()=> submit(idx));
-          optEl.appendChild(b);
+          b.disabled = !started; optEl.appendChild(b);
         });
         deadline = state.current.deadline || 0; if(raf) cancelAnimationFrame(raf); tick();
       }else{
@@ -1218,9 +1225,15 @@ function setupLogicRush(){
     }
 
     function submit(idx){
+      if(!started) return;
       // disable buttons after click
       optEl.querySelectorAll('button').forEach(b=> b.disabled = true);
       socket.emit('lr:answer', idx);
+      attempts++;
+      if(attempts >= 5){ // lock until result
+        started = false;
+        setTimeout(()=> showResult(), 600); // small delay to allow feedback
+      }
     }
 
     socket.on('lr:hello', (_me)=>{});
@@ -1235,8 +1248,33 @@ function setupLogicRush(){
     socket.on('lr:feedback', (p)=>{
       fbEl.textContent = p.ok? `+50 Energy` : `-20 HP`;
       fbEl.classList.toggle('good', !!p.ok); fbEl.classList.toggle('bad', !p.ok);
+      if(p.ok) correct++;
       setTimeout(()=>{ fbEl.textContent=''; fbEl.classList.remove('good','bad'); }, 1000);
     });
+
+    function showResult(){
+      summary.textContent = `You scored ${correct}/5.`;
+      resultPanel.hidden = false;
+      startPanel.style.display = 'none';
+      // keep options disabled until restart
+      optEl.querySelectorAll('button').forEach(b=> b.disabled = true);
+    }
+
+    function resetSession(){
+      attempts = 0; correct = 0; started = false;
+      resultPanel.hidden = true;
+      startPanel.style.display = '';
+      if(nameInput) nameInput.focus();
+    }
+
+    startBtn?.addEventListener('click', ()=>{
+      const nm = (nameInput?.value||'').trim();
+      if(nm.length >= 2){ try{ socket.emit('lr:setName', nm); }catch{} }
+      started = true; attempts = 0; correct = 0; resultPanel.hidden = true; startPanel.style.display = 'none';
+      // enable current buttons if a round is active
+      optEl.querySelectorAll('button').forEach(b=> b.disabled = false);
+    });
+    restartBtn?.addEventListener('click', resetSession);
   }
 }
 

@@ -242,6 +242,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--brand);box-shadow:0 0
   .logic-rush .timer-ring{ margin:0 auto 10px }
 }
 
+.lr-start{ background:#0f1534; border:1px solid #3b2466; border-radius:12px; padding:12px; margin-bottom:10px }
+.lr-result{ background:#0f1534; border:1px solid #3b2466; border-radius:12px; padding:12px; margin-top:10px }
+
 /* Your Team (Create Team) */
 .yourteam-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px }
 @media (max-width: 900px){ .yourteam-grid{ grid-template-columns: repeat(3, 1fr) } }

@@ -556,6 +556,13 @@ function attachLogicRush(io){
     socket.emit('lr:hello', { id: socket.id, name: board.get(socket.id).name });
     broadcastState();
 
+    socket.on('lr:setName', (n)=>{
+      try{
+        const nm = String(n||'').trim().slice(0,24);
+        if(nm.length>=2){ const p = board.get(socket.id) || { name, score:0, hp:100 }; p.name = nm; board.set(socket.id, p); io.emit('lr:leaderboard', { board: getBoard() }); }
+      }catch{}
+    });
+
     socket.on('lr:answer', (idx)=>{
       if(!current) return;
       const now = Date.now();

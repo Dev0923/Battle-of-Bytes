@@ -79,6 +79,16 @@
 
       <div class="lr-wrap">
         <div class="lr-left">
+          <div class="lr-start" id="lrStartPanel">
+            <div class="field" style="max-width:360px">
+              <label for="lrName">Enter your username</label>
+              <input id="lrName" type="text" placeholder="e.g. NeoCoder" maxlength="24" />
+            </div>
+            <div class="actions">
+              <button class="btn" id="lrStart" type="button">Start Logic Rush</button>
+            </div>
+          </div>
+
           <div class="timer-ring" title="Countdown">
             <div class="ring" id="lrRing"></div>
             <div class="ring-num" id="lrTime">5</div>
@@ -86,6 +96,13 @@
           <div class="lr-question" id="lrQuestion">Waiting for next question…</div>
           <div class="lr-options" id="lrOptions" role="group" aria-label="Logic Rush options"></div>
           <div id="lrFeedback" class="lr-feedback" aria-live="polite"></div>
+
+          <div class="lr-result" id="lrResult" hidden>
+            <p class="tagline" id="lrSummary">You scored 0/5.</p>
+            <div class="actions">
+              <button class="btn" id="lrRestart" type="button">Restart Quiz</button>
+            </div>
+          </div>
         </div>
         <div class="lr-right">
           <h4 class="neon" style="margin:0 0 8px">Leaderboard</h4>
