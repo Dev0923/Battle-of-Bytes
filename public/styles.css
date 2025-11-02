@@ -387,6 +387,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--brand);box-shadow:0 0
   .holo-title .title-scan{display:none}
 }
 
+/* Home title: force static (no blink, no reveal) */
+.page-home .holo-title{ clip-path:none }
+.page-home .holo-title.reveal{ animation:none }
+.page-home .holo-title .title-scan{ display:none }
+.page-home .holo-title.glitch .title-rgb{ opacity:0; transform:none }
+
 /* Teams page */
 .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
 .team-card{background:#120a2a;border:1px solid #3b2466;border-radius:12px;padding:16px;box-shadow:0 0 16px rgba(0,240,255,.08);position:relative;overflow:hidden}
