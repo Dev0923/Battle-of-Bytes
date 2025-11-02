@@ -1073,6 +1073,91 @@ document.addEventListener('DOMContentLoaded', ()=>{
   try{ document.body.classList.add('boot-complete'); }catch{}
 });
 
+// ------- Arena Challenge: Memory / Code Guessing + Energy -------
+function setupArenaChallenge(){
+  const wrap = document.getElementById('arenaChallenge');
+  if(!wrap) return;
+  const startBtn = document.getElementById('startRound');
+  const input = document.getElementById('codeInput');
+  const submit = document.getElementById('codeSubmit');
+  const display = document.getElementById('codeDisplay');
+  const bar = document.getElementById('energyBar');
+  const energyVal = document.getElementById('energyVal');
+  const status = document.getElementById('challengeStatus');
+
+  let energy = 50; // start
+  let round = 1;
+  let current = '';
+  let accepting = false;
+
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+  function setEnergy(v){
+    energy = clamp(v, 0, 100);
+    energyVal.textContent = String(energy);
+    const pct = energy + '%';
+    const fill = bar.querySelector('span');
+    if(fill){ fill.style.width = pct; }
+    bar.classList.add('pulse'); setTimeout(()=> bar.classList.remove('pulse'), 200);
+  }
+
+  function randHex(len){
+    const chars = '0123456789ABCDEF';
+    let s='';
+    for(let i=0;i<len;i++){ s += chars[Math.floor(Math.random()*chars.length)]; }
+    return s;
+  }
+
+  function revealCode(code){
+    display.textContent = code;
+    const fx = document.createElement('div'); fx.className='code-reveal'; display.parentElement.appendChild(fx);
+    setTimeout(()=> fx.remove(), 900);
+    // hide after a moment
+    setTimeout(()=>{ display.textContent = '••••'; accepting=true; input.disabled=false; input.value=''; input.focus(); }, 1100);
+  }
+
+  function nextRound(){
+    accepting = false; input.disabled = true; status.textContent='';
+    const len = Math.min(3 + round, 10);
+    current = randHex(len);
+    revealCode(current);
+  }
+
+  function gameOver(msg){
+    accepting = false; input.disabled = true; status.style.color='#ffd166'; status.textContent = msg || 'Game over. Energy depleted.';
+  }
+
+  function victory(){ accepting=false; input.disabled=true; status.style.color='#5be9b9'; status.textContent='Core fully energized. Victory!'; }
+
+  function submitGuess(){
+    if(!accepting) return;
+    const guess = (input.value||'').trim().toUpperCase();
+    if(!guess) return;
+    if(guess === current){
+      setEnergy(energy + 10);
+      round++;
+      status.style.color='#5be9b9'; status.textContent = `Correct! Round ${round} ready.`;
+      if(energy >= 100){ victory(); return; }
+      setTimeout(nextRound, 600);
+    }else{
+      setEnergy(energy - 15);
+      status.style.color='#ffd166'; status.textContent = `Wrong. Code was ${current}. Try again: Round ${round}.`;
+      if(energy <= 0){ gameOver(); return; }
+      setTimeout(nextRound, 900);
+    }
+  }
+
+  startBtn?.addEventListener('click', nextRound);
+  submit?.addEventListener('click', submitGuess);
+  input?.addEventListener('keydown', (e)=>{ if(e.key==='Enter') submitGuess(); });
+
+  // initialize visuals
+  setEnergy(energy);
+  display.textContent = '';
+}
+
+document.addEventListener('DOMContentLoaded', setupArenaChallenge);
+
 // ------- Home Dynamic Lighting (cursor-driven reflections) -------
 function setupHomeLighting(){
   const isHome = document.body.classList.contains('page-home');

@@ -42,6 +42,34 @@
       </div>
     </div>
   </div>
+  
+  <!-- Memory / Code Guessing Challenge -->
+  <section id="arenaChallenge" class="section arena-challenge">
+    <div class="container">
+      <h3 class="neon">Memory Challenge: Reconstruct the Code</h3>
+      <p class="tagline">Memorize the holographic code, then type it. Correct answers energize your core; mistakes drain it.</p>
+
+      <div class="energy-wrap">
+        <div class="energy-head">
+          <span>Energy</span>
+          <span class="energy-num"><span id="energyVal">50</span>/100</span>
+        </div>
+        <div class="energy-bar bar" id="energyBar"><span style="width:50%"></span></div>
+      </div>
+
+      <div class="challenge-ui">
+        <div class="code-area">
+          <code id="codeDisplay" aria-live="polite"></code>
+        </div>
+        <div class="actions">
+          <button class="btn" id="startRound" type="button">Start Round</button>
+          <input id="codeInput" type="text" inputmode="latin" autocomplete="off" placeholder="Type the code…" aria-label="Enter the code" />
+          <button class="btn" id="codeSubmit" type="button">Submit</button>
+        </div>
+        <div id="challengeStatus" class="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <%- include('partials/footer') %>

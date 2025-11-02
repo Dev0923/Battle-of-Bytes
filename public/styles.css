@@ -478,6 +478,23 @@ mix-blend-mode:screen;opacity:.22;pointer-events:none;animation:noise-shift 8s l
 .arena-panel .panel-inner{background:#120a2a;border:1px solid #3b2466;border-radius:14px;padding:16px 18px;box-shadow:0 0 30px rgba(0,240,255,.18)}
 .arena-panel[hidden]{display:none}
 
+/* Arena challenge */
+.arena-challenge{ padding-top: 24px }
+.arena-challenge .challenge-ui{ margin-top: 14px; display: grid; gap: 10px; max-width: 680px }
+.arena-challenge .code-area{ min-height: 48px; display:flex; align-items:center; background:#0f1534; border:1px solid #3b2466; border-radius:12px; padding:10px 12px; position:relative; overflow:hidden }
+.arena-challenge #codeDisplay{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 20px; letter-spacing: .12em; color:#bff9ff; text-shadow: 0 0 10px rgba(0,240,255,.35), 0 0 18px rgba(255,43,208,.2) }
+.arena-challenge input#codeInput{ flex:1; min-width: 200px }
+.arena-challenge .energy-wrap{ max-width: 680px; margin: 10px 0 6px }
+.energy-head{ display:flex; justify-content:space-between; align-items:center; color:#cde7ff; margin-bottom:6px }
+.energy-bar.bar{ height: 16px; position:relative }
+.energy-bar.bar>span{ background:linear-gradient(90deg,#00f0ff,#18ffd0 40%,#ff2bd0 95%); box-shadow: 0 0 12px rgba(0,240,255,.45), 0 0 16px rgba(255,43,208,.22) }
+.energy-bar.bar.pulse>span{ transition: width .4s ease }
+.arena-challenge .status{ min-height: 1.2em }
+
+/* Flash reveal effect for code */
+.code-reveal{ position:absolute; inset:0; background:linear-gradient(180deg,transparent,rgba(0,255,200,.12),transparent); mix-blend-mode:screen; animation: code-flash .9s ease; pointer-events:none }
+@keyframes code-flash{ 0%{opacity:0} 20%{opacity:.8} 100%{opacity:0} }
+
 /* Home background video layer (Home) */
 .page-home .home-video-layer{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .page-home .home-video-layer.hidden{display:none!important}
