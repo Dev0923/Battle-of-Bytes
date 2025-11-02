@@ -940,42 +940,10 @@ function setupHomeTitleFX(){
   if(!isHome) return;
   const title = document.querySelector('.holo-title');
   if(!title) return;
-  // Trigger reveal on load
-  requestAnimationFrame(()=> title.classList.add('reveal'));
-
-  // Optional tiny hum synced to flicker
-  let audioOk = false; let ac = null;
-  function tryEnableAudio(){
-    try{
-      ac = ac || new (window.AudioContext||window.webkitAudioContext)();
-      ac.resume?.();
-      audioOk = true;
-    }catch{ audioOk = false; }
-  }
-  ['pointerdown','keydown'].forEach(evt=> window.addEventListener(evt, tryEnableAudio, { once: true }));
-
-  function playHum(){
-    if(!audioOk){ tryEnableAudio(); if(!audioOk) return; }
-    try{
-      const osc = ac.createOscillator(); const g = ac.createGain();
-      osc.type = 'sine'; osc.frequency.value = 220 + Math.random()*40; g.gain.value = 0;
-      osc.connect(g); g.connect(ac.destination);
-      const now = ac.currentTime;
-      g.gain.linearRampToValueAtTime(0.035, now + 0.02);
-      g.gain.linearRampToValueAtTime(0.0, now + 0.22);
-      osc.start(now); osc.stop(now + 0.25);
-    }catch{}
-  }
-
-  // Randomized glitch pulses
-  function pulse(){
-    title.classList.add('glitch');
-    playHum();
-    setTimeout(()=> title.classList.remove('glitch'), 150);
-    const next = 1200 + Math.random()*1800; // faster: 1.2s - 3.0s
-    setTimeout(pulse, next);
-  }
-  setTimeout(pulse, 1200 + Math.random()*1200);
+  // Keep the title static: no reveal animation, no glitch/blink
+  title.classList.remove('reveal', 'glitch');
+  // Ensure any previously scheduled effects are not applied
+  // Intentionally do nothing further so the heading remains constant
 }
 
 document.addEventListener('DOMContentLoaded', setupHomeTitleFX);
