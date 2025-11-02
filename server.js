@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
+import compression from 'compression';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,13 +20,21 @@ app.use(helmet());
 app.use(cors({ origin: true }));
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true }));
+app.use(compression());
 
 // Rate limit for API
 const limiter = rateLimit({ windowMs: 60 * 1000, limit: 30 });
 app.use('/api/', limiter);
 
 // Static files (disable automatic index.html so EJS home renders at "/")
-app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+app.use(express.static(path.join(__dirname, 'public'), {
+  index: false,
+  maxAge: '7d',
+  setHeaders: (res, filePath) => {
+    // add immutable for fingerprinted assets if you later use them
+    res.setHeader('Cache-Control', 'public, max-age=604800');
+  }
+}));
 
 // Views (EJS)
 app.set('views', path.join(__dirname, 'views'));
@@ -169,9 +178,11 @@ app.get('/api/auction/stream', (req, res) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders?.();
   auctionClients.add(res);
+  // Heartbeat to keep proxies from closing idle SSE
+  const ping = setInterval(()=>{ try{ res.write(': ping\n\n'); }catch{} }, 25000);
   // Send initial state
   res.write(`event: init\n` + `data: ${JSON.stringify(readAuction())}\n\n`);
-  req.on('close', () => auctionClients.delete(res));
+  req.on('close', () => { auctionClients.delete(res); clearInterval(ping); });
 });
 
 app.post('/api/auction/bid', (req, res) => {
@@ -289,11 +300,12 @@ app.get('/api/poll/stream', (req, res) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders?.();
   pollClients.add(res);
+  const ping = setInterval(()=>{ try{ res.write(': ping\n\n'); }catch{} }, 25000);
   const p = readPoll();
   const day = normalizePollDay(p);
   writePoll(p);
   res.write(`event: init\n` + `data: ${JSON.stringify({ day, results: p.days[day] })}\n\n`);
-  req.on('close', () => pollClients.delete(res));
+  req.on('close', () => { pollClients.delete(res); clearInterval(ping); });
 });
 
 app.post('/api/poll/vote', (req, res) => {

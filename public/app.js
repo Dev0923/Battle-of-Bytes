@@ -940,10 +940,42 @@ function setupHomeTitleFX(){
   if(!isHome) return;
   const title = document.querySelector('.holo-title');
   if(!title) return;
-  // Keep the title static: no reveal animation, no glitch/blink
-  title.classList.remove('reveal', 'glitch');
-  // Ensure any previously scheduled effects are not applied
-  // Intentionally do nothing further so the heading remains constant
+  // Trigger reveal on load
+  requestAnimationFrame(()=> title.classList.add('reveal'));
+
+  // Optional tiny hum synced to flicker
+  let audioOk = false; let ac = null;
+  function tryEnableAudio(){
+    try{
+      ac = ac || new (window.AudioContext||window.webkitAudioContext)();
+      ac.resume?.();
+      audioOk = true;
+    }catch{ audioOk = false; }
+  }
+  ['pointerdown','keydown'].forEach(evt=> window.addEventListener(evt, tryEnableAudio, { once: true }));
+
+  function playHum(){
+    if(!audioOk){ tryEnableAudio(); if(!audioOk) return; }
+    try{
+      const osc = ac.createOscillator(); const g = ac.createGain();
+      osc.type = 'sine'; osc.frequency.value = 220 + Math.random()*40; g.gain.value = 0;
+      osc.connect(g); g.connect(ac.destination);
+      const now = ac.currentTime;
+      g.gain.linearRampToValueAtTime(0.035, now + 0.02);
+      g.gain.linearRampToValueAtTime(0.0, now + 0.22);
+      osc.start(now); osc.stop(now + 0.25);
+    }catch{}
+  }
+
+  // Randomized glitch pulses
+  function pulse(){
+    title.classList.add('glitch');
+    playHum();
+    setTimeout(()=> title.classList.remove('glitch'), 150);
+    const next = 1200 + Math.random()*1800; // faster: 1.2s - 3.0s
+    setTimeout(pulse, next);
+  }
+  setTimeout(pulse, 1200 + Math.random()*1200);
 }
 
 document.addEventListener('DOMContentLoaded', setupHomeTitleFX);
@@ -1387,10 +1419,24 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const overlay = document.getElementById('teamRulesOverlay');
   if(!overlay) return; // not on this page
   const ok = document.getElementById('rulesOkBtn');
-  ok?.addEventListener('click', ()=>{
-    // Remove the notification overlay when user acknowledges
-    overlay.remove();
-  });
+
+  function trapFocus(container){
+    const focusable = ()=> [...container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el=> !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+    function onKey(e){
+      if(e.key === 'Escape'){ e.preventDefault(); close(); }
+      if(e.key !== 'Tab') return;
+      const list = focusable(); if(!list.length) return;
+      const first = list[0], last = list[list.length-1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+    container.addEventListener('keydown', onKey);
+    return ()=> container.removeEventListener('keydown', onKey);
+  }
+  let untrap = null;
+  function close(){ if(untrap) untrap(); overlay.remove(); }
+  if(ok){ ok.focus(); untrap = trapFocus(overlay); }
+  ok?.addEventListener('click', close);
 });
 
 // ------- Team name picker (Create your team page) -------
@@ -1749,7 +1795,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         arr.forEach(p=>{
           const card = document.createElement('div'); card.className = 'team-preview-card';
           card.innerHTML = `
-            <figure><img src="${p.img}" alt="${label} member"/></figure>
+            <figure><img src="${p.img}" alt="${label} member" loading="lazy"/></figure>
             <div class="tp-cap"><span>${label}</span><span>Bid: ${p.bid}</span></div>
           `;
           grid.appendChild(card);
@@ -1758,9 +1804,24 @@ document.addEventListener('DOMContentLoaded', ()=>{
       addCards(picks4, '4th Year'); addCards(picks3, '3rd Year'); addCards(picks2, '2nd Year');
       overlay.hidden = false; requestAnimationFrame(()=> overlay.classList.add('visible'));
       const closeBtn = document.getElementById('tpClose');
-      const onClose = ()=>{ overlay.classList.remove('visible'); setTimeout(()=> overlay.hidden = true, 180); };
+      const onClose = ()=>{ overlay.classList.remove('visible'); setTimeout(()=>{ overlay.hidden = true; if(untrap) untrap(); }, 180); };
+      function trapFocus(container){
+        const focusable = ()=> [...container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el=> !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+        function onKey(e){
+          if(e.key === 'Escape'){ e.preventDefault(); onClose(); }
+          if(e.key !== 'Tab') return;
+          const list = focusable(); if(!list.length) return;
+          const first = list[0], last = list[list.length-1];
+          if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+          else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+        }
+        container.addEventListener('keydown', onKey);
+        return ()=> container.removeEventListener('keydown', onKey);
+      }
+      let untrap = trapFocus(overlay);
       closeBtn?.addEventListener('click', onClose, { once:true });
       overlay.addEventListener('click', (e)=>{ if(e.target === overlay) onClose(); }, { once:true });
+      closeBtn?.focus();
     }
   });
 });

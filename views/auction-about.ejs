@@ -64,7 +64,7 @@
         <div class="gallery">
           <% participants.forEach(function(p){ %>
             <figure>
-              <img class="participant-img" src="<%= p.src %>" alt="Participant" />
+              <img class="participant-img" src="<%= p.src %>" alt="Participant" loading="lazy" />
             </figure>
           <% }) %>
         </div>
@@ -81,7 +81,7 @@
         <div class="gallery">
           <% allParticipants.forEach(function(p){ %>
             <figure>
-              <img class="participant-img" src="<%= p.src %>" alt="Participant" />
+              <img class="participant-img" src="<%= p.src %>" alt="Participant" loading="lazy" />
             </figure>
           <% }) %>
         </div>
@@ -153,7 +153,7 @@
         <% gallery.forEach(function(src){ %>
           <figure>
             <div class="glimpse-img-wrap">
-              <img class="glimpse-img" src="<%= src %>" alt="Auction glimpse" />
+              <img class="glimpse-img" src="<%= src %>" alt="Auction glimpse" loading="lazy" />
             </div>
             <figcaption>Captured moment</figcaption>
           </figure>

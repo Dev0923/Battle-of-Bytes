@@ -8,7 +8,7 @@
       <% teams.forEach(t => { if (t.slug === 'code-trail') return; %>
         <a class="team-card holo" href="/teams/<%= t.slug %>">
           <div class="team-media">
-            <img class="team-logo" src="/images/teams/<%= t.slug %>.jpg" alt="<%= t.name %> logo" />
+            <img class="team-logo" src="/images/teams/<%= t.slug %>.jpg" alt="<%= t.name %> logo" loading="lazy" />
             <span class="scanline" aria-hidden="true"></span>
             <span class="gloss" aria-hidden="true"></span>
           </div>

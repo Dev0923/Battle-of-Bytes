@@ -3,8 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title><%= title || 'Campus Charity Auction' %></title>
-  <meta name="description" content="Auction event site with cyberpunk theme, live auction, and poll." />
+  <title><%= title || 'Battle of Bytes' %></title>
+  <meta name="description" content="Battle of Bytes — a cyberpunk-themed tech event with interactive Arena games, a live auction, and a daily poll." />
+  <meta name="theme-color" content="#0a0620" />
+  <!-- Open Graph / Twitter for rich previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="<%= title || 'Battle of Bytes' %>" />
+  <meta property="og:description" content="Join the Arena, build teams, and cast your vote in Battle of Bytes." />
+  <meta property="og:image" content="/images/auction-gavel.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= title || 'Battle of Bytes' %>" />
+  <meta name="twitter:description" content="Join the Arena, build teams, and cast your vote in Battle of Bytes." />
+  <meta name="twitter:image" content="/images/auction-gavel.png" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="icon" href="/images/auction-gavel.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +25,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <div class="branding">
-        <img src="/images/auction-gavel.png" alt="Auction gavel icon" width="48" height="48" />
+        <img src="/images/auction-gavel.png" alt="Auction gavel icon" width="50" height="50" />
         <span>Battle of Bytes</span>
       </div>
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Toggle navigation">☰</button>
