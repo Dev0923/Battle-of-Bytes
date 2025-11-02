@@ -54,15 +54,18 @@ if (!fs.existsSync(auctionFile)) {
   };
   fs.writeFileSync(auctionFile, JSON.stringify(initialAuction, null, 2));
 }
-if (!fs.existsSync(pollFile)) {
-  const today = new Date().toISOString().slice(0, 10);
-  const initialPoll = {
-    days: {
-      [today]: { options: { TeamA: 0, TeamB: 0, TeamC: 0 }, lastUpdated: new Date().toISOString() }
-    }
-  };
-  fs.writeFileSync(pollFile, JSON.stringify(initialPoll, null, 2));
-}
+// Initialize poll file if missing (best-effort; tolerate read-only FS like Vercel)
+try{
+  if (!fs.existsSync(pollFile)) {
+    const today = new Date().toISOString().slice(0, 10);
+    const initialPoll = {
+      days: {
+        [today]: { options: { TeamA: 0, TeamB: 0, TeamC: 0 }, lastUpdated: new Date().toISOString() }
+      }
+    };
+    fs.writeFileSync(pollFile, JSON.stringify(initialPoll, null, 2));
+  }
+}catch{ /* ignore on platforms that disallow writing */ }
 
 // Simple healthcheck
 app.get('/api/health', (_req, res) => {
@@ -222,6 +225,7 @@ app.post('/auction/bid', (req, res) => {
 
 // ------------ Poll Feature (daily reset by design) -------------
 const pollClients = new Set();
+let POLL_MEM = null; // in-memory fallback when FS is read-only/unavailable
 function todayKey() { return new Date().toISOString().slice(0, 10); }
 function pollTemplateOptions(){
   // Use team slugs as keys so we can map to display names on the client
@@ -248,15 +252,33 @@ function normalizePollDay(p){
   p.days[day].lastUpdated = p.days[day].lastUpdated || new Date().toISOString();
   return day;
 }
-function readPoll() {
-  const raw = fs.readFileSync(pollFile, 'utf8');
-  return JSON.parse(raw);
+function _blankPoll(){
+  const today = todayKey();
+  return { days: { [today]: { options: pollTemplateOptions(), lastUpdated: new Date().toISOString() } } };
 }
-function writePoll(p) { fs.writeFileSync(pollFile, JSON.stringify(p, null, 2)); }
+function readPoll() {
+  try{
+    const raw = fs.readFileSync(pollFile, 'utf8');
+    return JSON.parse(raw);
+  }catch{
+    // Fallback to memory; initialize if needed
+    if(!POLL_MEM) POLL_MEM = _blankPoll();
+    return JSON.parse(JSON.stringify(POLL_MEM));
+  }
+}
+function writePoll(p) {
+  try{
+    fs.writeFileSync(pollFile, JSON.stringify(p, null, 2));
+  }catch{
+    // Read-only FS (e.g., Vercel). Keep it in-memory per process.
+    POLL_MEM = JSON.parse(JSON.stringify(p));
+  }
+}
 
 app.get('/api/poll/results', (_req, res) => {
   const p = readPoll();
   const day = normalizePollDay(p);
+  // Best-effort persist; safe on read-only
   writePoll(p);
   res.json({ ok: true, day, results: p.days[day] });
 });
@@ -436,10 +458,18 @@ app.get('/arena', (_req, res) => {
   res.render('arena', { teams: TEAMS });
 });
 app.get('/poll', (_req, res) => {
-  const p = readPoll();
-  const day = normalizePollDay(p);
-  writePoll(p);
-  res.render('poll', { day, results: p.days[day], teams: TEAMS });
+  try{
+    const p = readPoll();
+    const day = normalizePollDay(p);
+    writePoll(p); // safe no-op on read-only
+    return res.render('poll', { day, results: p.days[day], teams: TEAMS });
+  }catch(err){
+    console.error('Poll render failed:', err);
+    // Render an empty poll UI instead of 500
+    const day = todayKey();
+    const fallback = { options: pollTemplateOptions(), lastUpdated: new Date().toISOString() };
+    return res.render('poll', { day, results: fallback, teams: TEAMS });
+  }
 });
 app.get('/enquiry', (req, res) => {
   res.render('enquiry', { query: req.query });
